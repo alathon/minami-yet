@@ -15,7 +15,6 @@ import (
 
 type app struct {
 	lastBodyHash     []byte
-	lastCheckTime    time.Time
 	registeredEmails []string
 }
 
@@ -40,15 +39,14 @@ func sendEmail(a *app) {
 }
 
 func main() {
+	viper.SetDefault("VPR_TIME_BETWEEN_SECONDS", 3600)
 	viper.SetEnvPrefix("vpr")
 	viper.AutomaticEnv()
-	viper.SetDefault("TIME_BETWEEN_SECONDS", 3600)
 
 	timeBetweenSeconds := viper.GetInt("TIME_BETWEEN_SECONDS")
 	website := viper.GetString("WEBSITE")
 
 	a := app{
-		lastCheckTime:    time.Now(),
 		registeredEmails: strings.Split(viper.GetString("EMAILS"), ","),
 	}
 
@@ -67,8 +65,9 @@ func main() {
 	})
 
 	for {
+		fmt.Println("Visiting ", website)
 		coll.Visit(website)
+		fmt.Println("Sleeping for ", timeBetweenSeconds, " seconds")
 		time.Sleep(time.Duration(timeBetweenSeconds) * time.Second)
 	}
-
 }

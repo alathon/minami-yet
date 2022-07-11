@@ -1,0 +1,13 @@
+# fly.toml file generated for minami-yet on 2022-07-11T16:52:45+02:00
+
+app = "minami-yet"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+
